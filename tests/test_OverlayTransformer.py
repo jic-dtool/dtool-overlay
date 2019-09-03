@@ -32,6 +32,7 @@ def test_OverlayTransformer_json():
         ).to_json()
     )
 
+
 def test_OverlayTransformer_csv():
 
     from dtool_overlay.utils import TransformOverlays
@@ -46,7 +47,6 @@ def test_OverlayTransformer_csv():
 1,True,bananas.txt
 2,False,melon.txt
 3,True,mint.txt"""
-
 
     assert overlays == TransformOverlays.from_csv(csv).to_dict()
     assert csv == TransformOverlays.from_csv(csv).to_csv()
