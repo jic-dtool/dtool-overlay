@@ -1,7 +1,9 @@
 """Utility classes and functions for manipulating overlays."""
 
 import json
+import fnmatch
 import re
+
 
 EXCLUDED_NAMES = ("identifiers", "relpaths")
 
@@ -21,6 +23,22 @@ def type_value(s):
         return float(s)
 
     return s
+
+
+def bool_overlay_from_glob_rule(name, dataset, glob_rule):
+    """Return TransformOverlays instance."""
+    overlays = TransformOverlays()
+    overlays.overlay_names.append(name)
+    for identifier in sorted(dataset.identifiers):
+        props = dataset.item_properties(identifier)
+        relpath = props["relpath"]
+        value = fnmatch.fnmatch(relpath, glob_rule)
+
+        overlays.identifiers.append(identifier)
+        overlays.relpaths.append(relpath)
+        overlays.overlays.setdefault(name, []).append(value)
+
+    return overlays
 
 
 class TransformOverlays(object):
