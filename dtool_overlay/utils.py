@@ -1,5 +1,7 @@
 """Utility classes and functions for manipulating overlays."""
 
+import json
+
 EXCLUDED_NAMES = ("identifiers", "relpaths")
 
 
@@ -23,6 +25,19 @@ class TransformOverlays(object):
             transform_overlays.overlays[name] = data[name]
         return transform_overlays
 
+    @classmethod
+    def from_json(cls, json_data):
+        """Return TransformOverlays instance from json representation."""
+        data = json.loads(json_data)
+
+        transform_overlays = cls()
+        transform_overlays.overlay_names = [k for k in data.keys()]
+        transform_overlays.identifiers = data["identifiers"]
+        transform_overlays.relpaths = data["relpaths"]
+        for name in transform_overlays.overlay_names:
+            transform_overlays.overlays[name] = data[name]
+        return transform_overlays
+
     def to_dict(self):
         """Return dict representation of TransformOverlays instance."""
         overlays = {
@@ -32,3 +47,13 @@ class TransformOverlays(object):
         for name in self.overlay_names:
             overlays[name] = self.overlays[name]
         return overlays
+
+    def to_json(self):
+        """Return json representation of TransformOverlays instance."""
+        overlays = {
+            "identifiers": self.identifiers,
+            "relpaths": self.relpaths,
+        }
+        for name in self.overlay_names:
+            overlays[name] = self.overlays[name]
+        return json.dumps(overlays, indent=2)
