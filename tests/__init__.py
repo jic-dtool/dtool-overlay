@@ -71,6 +71,12 @@ def tmp_dataset_fixture(request):
             handle = "{}/read_{}.fq.gz".format(strain, read)
             proto_dataset.put_item(fpath, handle)
 
+    md5_fpath = os.path.join(d, "md5.txt")
+    with open(md5_fpath, "w") as fh:
+        fh.write("")
+    md5_handle = "md5.txt"
+    proto_dataset.put_item(md5_fpath, md5_handle)
+
     proto_dataset.freeze()
 
     return dtoolcore.DataSet.from_uri(proto_dataset.uri)
