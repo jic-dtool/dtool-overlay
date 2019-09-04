@@ -102,5 +102,5 @@ command below::
     8bda245a8cd526673aab775f90206c8b67d196af,9760280dc6313d3bb598fa03c5931a7f037d7ffc,ERR022075_2.fastq.gz
     9760280dc6313d3bb598fa03c5931a7f037d7ffc,8bda245a8cd526673aab775f90206c8b67d196af,ERR022075_1.fastq.gz
 
-In the above the suffix ".fastq.gz" is used to extract the prefix "ERR022075_"
+In the above the suffix ".fastq.gz" is used to extract the prefix ``ERR022075_``
 that is used to find matching pairs.
