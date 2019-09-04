@@ -47,3 +47,31 @@ eba3ee4e2f41b172d3a84f425664df4f21a60710,1f32389b2f38edb965fc856a1bd2d1a08040407
 f7b8e915f8af6ea3873104c42efd1770f8eb51db,2d7cfe62dc3d14f7a9407ba334189b68922f0457,wt/read_1.fq.gz"""  # NOQA
 
     assert expected == overlay.to_csv()
+
+
+def test_value_overlays_from_parsing(tmp_dataset_fixture):  # NOQA
+    from dtool_overlay.utils import (
+        value_overlays_from_parsing,
+        TransformOverlays,
+    )
+    parse_rule = "{line}/read_{read:d}.fq.gz"
+    glob_rule = "*.fq.gz"
+    overlays = value_overlays_from_parsing(
+        tmp_dataset_fixture,
+        parse_rule,
+        glob_rule
+    )
+    assert isinstance(overlays, TransformOverlays)
+
+    expected = """identifiers,line,read,relpaths
+0109d5c3918c504f12a6270574ddd99aa7907b44,None,None,md5.txt
+1f32389b2f38edb965fc856a1bd2d1a08040407a,mut,1,mut/read_1.fq.gz
+2d7cfe62dc3d14f7a9407ba334189b68922f0457,wt,2,wt/read_2.fq.gz
+eba3ee4e2f41b172d3a84f425664df4f21a60710,mut,2,mut/read_2.fq.gz
+f7b8e915f8af6ea3873104c42efd1770f8eb51db,wt,1,wt/read_1.fq.gz"""  # NOQA
+
+    assert expected == overlays.to_csv()
+
+    for value in overlays.overlays["read"]:
+        if value is not None:
+            assert type(value) is int

@@ -16,6 +16,7 @@ setup(
     url=url,
     install_requires=[
         "dtoolcore",
+        "parse",
     ],
     download_url="{}/tarball/{}".format(url, version),
     license="MIT"

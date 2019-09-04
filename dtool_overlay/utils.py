@@ -4,6 +4,8 @@ import json
 import fnmatch
 import re
 
+import parse
+
 
 EXCLUDED_NAMES = ("identifiers", "relpaths")
 
@@ -73,6 +75,50 @@ def pair_overlay_from_suffix(name, dataset, suffix):
         overlays.identifiers.append(identifier)
         overlays.relpaths.append(relpath)
         overlays.overlays.setdefault(name, []).append(value)
+
+    return overlays
+
+
+def value_overlays_from_parsing(dataset, parse_rule, glob_rule):
+    """Return bool TransformOverlays instance from glob rule."""
+    overlays = TransformOverlays()
+    parsed = []
+    identifiers = sorted(dataset.identifiers)
+
+    # Parse metadata from relpaths that match the glob rule.
+    for identifier in identifiers:
+        props = dataset.item_properties(identifier)
+        relpath = props["relpath"]
+        if fnmatch.fnmatch(relpath, glob_rule):
+            # Parse the relpath for values.
+            parsed.append(parse.parse(parse_rule, relpath))
+        else:
+            parsed.append(None)
+
+    # Determine the overlay names.
+    overlay_names = []
+    for p in parsed:
+        if p is not None:
+            overlay_names.extend(p.named.keys())
+            break
+
+    # Populate the TransformOverlays instance with data.
+    overlays.overlay_names = sorted(overlay_names)
+    for identifier, p in zip(identifiers, parsed):
+        props = dataset.item_properties(identifier)
+        relpath = props["relpath"]
+
+        overlays.identifiers.append(identifier)
+        overlays.relpaths.append(relpath)
+
+        print(p)
+        if p is None:
+            for name in overlay_names:
+                overlays.overlays.setdefault(name, []).append(None)
+        else:
+            for name in overlay_names:
+                value = p.named[name]
+                overlays.overlays.setdefault(name, []).append(value)
 
     return overlays
 
