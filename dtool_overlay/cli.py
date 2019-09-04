@@ -113,7 +113,7 @@ def pairs(dataset_uri, overlay_name, suffix):
 @overlays.command()
 @dataset_uri_argument
 @click.argument('csv_template', type=click.File('r'))
-def write(dataset_uri, template):
+def write(dataset_uri, csv_template):
     """Add overlays from template to the dataset.
 
     For example to add an overlay stored in the file "template.csv":
@@ -125,6 +125,6 @@ def write(dataset_uri, template):
     dtool overlays glob <URI> is_csv '*.csv' | dtool overlays write <URI> -
     """
     ds = dtoolcore.DataSet.from_uri(dataset_uri)
-    csv_content = template.read()
+    csv_content = csv_template.read()
     overlays = TransformOverlays.from_csv(csv_content)
     overlays.put_in_dataset(ds)
