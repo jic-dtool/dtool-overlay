@@ -108,3 +108,23 @@ def pairs(dataset_uri, overlay_name, suffix):
     ds = dtoolcore.DataSet.from_uri(dataset_uri)
     overlays = pair_overlay_from_suffix(overlay_name, ds, suffix)
     click.secho(overlays.to_csv())
+
+
+@overlays.command()
+@dataset_uri_argument
+@click.argument('csv_template', type=click.File('r'))
+def write(dataset_uri, template):
+    """Add overlays from template to the dataset.
+
+    For example to add an overlay stored in the file "template.csv":
+
+    dtool overlays write <DS_URI> template.csv
+
+    To stream content from stdin use "-", e.g.
+
+    dtool overlays glob <URI> is_csv '*.csv' | dtool overlays write <URI> -
+    """
+    ds = dtoolcore.DataSet.from_uri(dataset_uri)
+    csv_content = template.read()
+    overlays = TransformOverlays.from_csv(csv_content)
+    overlays.put_in_dataset(ds)
