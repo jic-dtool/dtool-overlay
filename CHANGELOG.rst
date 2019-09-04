@@ -31,8 +31,10 @@ Security
 ^^^^^^^^
 
 
-[Intial release]
-----------------
+[0.1.0] - 2019-09-04
+--------------------
+
+Initial release.
 
 Added
 ^^^^^
