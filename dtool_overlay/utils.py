@@ -111,7 +111,6 @@ def value_overlays_from_parsing(dataset, parse_rule, glob_rule):
         overlays.identifiers.append(identifier)
         overlays.relpaths.append(relpath)
 
-        print(p)
         if p is None:
             for name in overlay_names:
                 overlays.overlays.setdefault(name, []).append(None)
@@ -174,6 +173,32 @@ class TransformOverlays(object):
 
         return transform_overlays
 
+    @classmethod
+    def from_dataset(cls, dataset):
+        """Return TransformOverlays instance from dataset."""
+        transform_overlays = cls()
+        overlay_names = dataset.list_overlay_names()
+        transform_overlays.overlay_names = overlay_names
+
+        # Create overlay lookup table.
+        overlays_lookup = {}
+        for name in overlay_names:
+            overlays_lookup[name] = dataset.get_overlay(name)
+
+        # Populate the TransformOverlays instance.
+        for identifier in sorted(dataset.identifiers):
+            props = dataset.item_properties(identifier)
+            relpath = props["relpath"]
+
+            transform_overlays.identifiers.append(identifier)
+            transform_overlays.relpaths.append(relpath)
+
+            for name in overlay_names:
+                value = overlays_lookup[name][identifier]
+                transform_overlays.overlays.setdefault(name, []).append(value)
+
+        return transform_overlays
+
     def to_dict(self):
         """Return dict representation of TransformOverlays instance."""
         overlays = {
@@ -207,3 +232,11 @@ class TransformOverlays(object):
             csv_lines.append(",".join(row))
 
         return "\n".join(csv_lines)
+
+    def put_in_dataset(self, dataset):
+        assert sorted(self.identifiers) == sorted(dataset.identifiers)
+        for name in self.overlay_names:
+            overlay = {}
+            for i, value in zip(self.identifiers, self.overlays[name]):
+                overlay[i] = value
+            dataset.put_overlay(name, overlay)
