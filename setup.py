@@ -17,7 +17,14 @@ setup(
     install_requires=[
         "dtoolcore",
         "parse",
+        "click",
+        "dtool-cli",
     ],
+    entry_points={
+        "dtool.cli": [
+            "overlays=dtool_overlay.cli:overlays",
+        ],
+    },
     download_url="{}/tarball/{}".format(url, version),
     license="MIT"
 )
