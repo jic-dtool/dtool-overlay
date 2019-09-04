@@ -26,13 +26,49 @@ def type_value(s):
 
 
 def bool_overlay_from_glob_rule(name, dataset, glob_rule):
-    """Return TransformOverlays instance."""
+    """Return bool TransformOverlays instance from glob rule."""
     overlays = TransformOverlays()
     overlays.overlay_names.append(name)
     for identifier in sorted(dataset.identifiers):
         props = dataset.item_properties(identifier)
         relpath = props["relpath"]
         value = fnmatch.fnmatch(relpath, glob_rule)
+
+        overlays.identifiers.append(identifier)
+        overlays.relpaths.append(relpath)
+        overlays.overlays.setdefault(name, []).append(value)
+
+    return overlays
+
+
+def pair_overlay_from_suffix(name, dataset, suffix):
+    """Return pair TransformOverlays instance from suffix."""
+    overlays = TransformOverlays()
+    overlays.overlay_names.append(name)
+
+    pairs = {}
+    for identifier in dataset.identifiers:
+        props = dataset.item_properties(identifier)
+        relpath = props["relpath"]
+        if relpath.endswith(suffix):
+            # Add 1 to strip the extra character representing the pair.
+            strip_length = len(suffix) + 1
+            longest_prefix = relpath[:-strip_length]
+            pairs.setdefault(longest_prefix, []).append(identifier)
+
+    lookup = {}
+    for pair in pairs.values():
+        assert len(pair) == 2
+        p1, p2 = pair
+        lookup[p1] = p2
+        lookup[p2] = p1
+
+    for identifier in sorted(dataset.identifiers):
+        props = dataset.item_properties(identifier)
+        relpath = props["relpath"]
+        value = None
+        if relpath.endswith(suffix):
+            value = lookup[identifier]
 
         overlays.identifiers.append(identifier)
         overlays.relpaths.append(relpath)
