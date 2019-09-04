@@ -63,21 +63,48 @@ def glob(dataset_uri, overlay_name, glob_rule):
 def parse(dataset_uri, parse_rule, glob_rule):
     """Create template by parsing relpaths that also match a glob rule.
 
-    For example, consider the relpath structure "repl_1/temp_37.0/tomato.csv"
-    one could create overlays named "replicate", "treatment", and plant using
+    For example, consider the relpath structure "repl_1/salt/result.csv"
+    one could create overlays named "replicate", "treatment" using
     the command below.
 
     dtool overlays template parse <DS_URI>  \\
-      'repl_{replicate:d}/temp_{treatment:f}/{plant}' \\
+      'repl_{replicate:d}/{treatment}/result.csv' \\
       '*.csv'
 
     Note that the parse_rule and glob_rule need to be quoted on the command
-    line to avoid the shell expanding it.
+    line to avoid the shell expanding them.
 
-    Note also that the replicate values will be typed as integers and the
-    temperature values will be typed as floating point, see
+    Note also that the replicate values will be typed as integers, see
     https://pypi.org/project/parse/ for more details.
     """
     ds = dtoolcore.DataSet.from_uri(dataset_uri)
     overlays = value_overlays_from_parsing(ds, parse_rule, glob_rule)
+    click.secho(overlays.to_csv())
+
+
+@template.command()
+@dataset_uri_argument
+@click.option("-n", "--overlay_name")
+@click.argument("suffix")
+def pairs(dataset_uri, overlay_name, suffix):
+    """Create template with pair item identifiers for files with common prefix.
+
+    For example, consider the relpaths:
+
+    - "exp1/read1.fq.gz"
+    - "exp1/read2.fq.gz"
+    - "exp2/read1/fq.gz"
+    - "exp2/read2/fq.gz"
+
+    One could create an overlay named "pair_id"  for these using the command
+
+    dtool overlays template glob <DS_URI> .fq.gz
+
+    The suffix above (.fq.gz) results in the common prefixes would be
+    "exp1/read" and "exp2/read". This is then used to find matching pairs.
+    """
+    if overlay_name is None:
+        overlay_name = "pair_id"
+    ds = dtoolcore.DataSet.from_uri(dataset_uri)
+    overlays = pair_overlay_from_suffix(overlay_name, ds, suffix)
     click.secho(overlays.to_csv())
