@@ -31,3 +31,14 @@ Security
 ^^^^^^^^
 
 
+[Intial release]
+----------------
+
+Added
+^^^^^
+
+- The CLI command 'dtool overlays show'
+- The CLI command 'dtool overlays write'
+- The CLI command 'dtool overlays template glob'
+- The CLI command 'dtool overlays template pairs'
+- The CLI command 'dtool overlays template parse'
