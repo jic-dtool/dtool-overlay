@@ -91,14 +91,14 @@ def pairs(dataset_uri, overlay_name, suffix):
 
     For example, consider the relpaths:
 
-    - "exp1/read1.fq.gz"
-    - "exp1/read2.fq.gz"
-    - "exp2/read1/fq.gz"
-    - "exp2/read2/fq.gz"
+    exp1/read1.fq.gz
+    exp1/read2.fq.gz
+    exp2/read1/fq.gz
+    exp2/read2/fq.gz
 
     One could create an overlay named "pair_id"  for these using the command
 
-    dtool overlays template glob <DS_URI> .fq.gz
+    dtool overlays template pairs <DS_URI> .fq.gz
 
     The suffix above (.fq.gz) results in the common prefixes would be
     "exp1/read" and "exp2/read". This is then used to find matching pairs.
@@ -114,7 +114,7 @@ def pairs(dataset_uri, overlay_name, suffix):
 @dataset_uri_argument
 @click.argument('csv_template', type=click.File('r'))
 def write(dataset_uri, csv_template):
-    """Add overlays from template to the dataset.
+    """Add overlays from CSV template to dataset.
 
     For example to add an overlay stored in the file "template.csv":
 
