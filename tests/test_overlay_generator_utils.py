@@ -55,11 +55,9 @@ def test_value_overlays_from_parsing(tmp_dataset_fixture):  # NOQA
         TransformOverlays,
     )
     parse_rule = "{line}/read_{read:d}.fq.gz"
-    glob_rule = "*.fq.gz"
     overlays = value_overlays_from_parsing(
         tmp_dataset_fixture,
         parse_rule,
-        glob_rule
     )
     assert isinstance(overlays, TransformOverlays)
 

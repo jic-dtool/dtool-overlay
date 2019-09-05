@@ -59,26 +59,32 @@ def glob(dataset_uri, overlay_name, glob_rule):
 @template.command()
 @dataset_uri_argument
 @click.argument("parse_rule")
-@click.argument("glob_rule")
-def parse(dataset_uri, parse_rule, glob_rule):
-    """Create template by parsing relpaths that also match a glob rule.
+def parse(dataset_uri, parse_rule):
+    """Create template by parsing relpaths.
 
     For example, consider the relpath structure "repl_1/salt/result.csv"
     one could create overlays named "replicate", "treatment" using
     the command below.
 
     dtool overlays template parse <DS_URI>  \\
-      'repl_{replicate:d}/{treatment}/result.csv' \\
-      '*.csv'
+      'repl_{replicate:d}/{treatment}/result.csv'
 
-    Note that the parse_rule and glob_rule need to be quoted on the command
-    line to avoid the shell expanding them.
+    The parse_rule needs to be quoted on the command line to avoid the shell
+    expanding it.
 
-    Note also that the replicate values will be typed as integers, see
+    Note that the replicate values will be typed as integers, see
     https://pypi.org/project/parse/ for more details.
+
+    It is possible to ignore parts of a relpath by using a pair of curly
+    braces without a name in it. The command below is different from that
+    above in that it only creates a "replicate" overlay.
+
+    dtool overlays template parse <DS_URI>  \\
+      'repl_{replicate:d}/{}/result.csv'
+
     """
     ds = dtoolcore.DataSet.from_uri(dataset_uri)
-    overlays = value_overlays_from_parsing(ds, parse_rule, glob_rule)
+    overlays = value_overlays_from_parsing(ds, parse_rule)
     click.secho(overlays.to_csv())
 
 

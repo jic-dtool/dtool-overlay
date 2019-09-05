@@ -61,11 +61,9 @@ def test_OverlayTransformet_dataset(tmp_dataset_fixture):  # NOQA
     )
 
     parse_rule = "{line}/read_{read:d}.fq.gz"
-    glob_rule = "*.fq.gz"
     overlays = value_overlays_from_parsing(
         tmp_dataset_fixture,
         parse_rule,
-        glob_rule
     )
 
     expected = """identifiers,line,read,relpaths

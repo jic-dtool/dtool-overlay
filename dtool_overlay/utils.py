@@ -79,7 +79,7 @@ def pair_overlay_from_suffix(name, dataset, suffix):
     return overlays
 
 
-def value_overlays_from_parsing(dataset, parse_rule, glob_rule):
+def value_overlays_from_parsing(dataset, parse_rule):
     """Return bool TransformOverlays instance from glob rule."""
     overlays = TransformOverlays()
     parsed = []
@@ -89,11 +89,7 @@ def value_overlays_from_parsing(dataset, parse_rule, glob_rule):
     for identifier in identifiers:
         props = dataset.item_properties(identifier)
         relpath = props["relpath"]
-        if fnmatch.fnmatch(relpath, glob_rule):
-            # Parse the relpath for values.
-            parsed.append(parse.parse(parse_rule, relpath))
-        else:
-            parsed.append(None)
+        parsed.append(parse.parse(parse_rule, relpath))
 
     # Determine the overlay names.
     overlay_names = []
