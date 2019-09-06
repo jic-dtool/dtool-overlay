@@ -5,6 +5,14 @@ dtool CLI commands for working with per item metadata
    :target: http://badge.fury.io/py/dtool-overlay
    :alt: PyPi package
 
+.. image:: https://travis-ci.org/jic-dtool/dtool-overlay.svg?branch=master
+   :target: https://travis-ci.org/jic-dtool/dtool-overlay
+   :alt: Travis CI build status (Linux)
+
+.. image:: https://codecov.io/github/jic-dtool/dtool-overlay/coverage.svg?branch=master
+   :target: https://codecov.io/github/jic-dtool/dtool-overlay?branch=master
+   :alt: Code Coverage
+
 Installation
 ------------
 
