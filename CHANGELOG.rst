@@ -31,6 +31,20 @@ Security
 ^^^^^^^^
 
 
+[0.2.0] - 2019-09-06
+--------------------
+
+Changed
+^^^^^^^
+
+- Made invocation of 'dtool overlays template parse' easier by removing need for glob_rule
+
+Fixed
+^^^^^
+
+- Improved the help text in the CLI commands
+
+
 [0.1.0] - 2019-09-04
 --------------------
 
