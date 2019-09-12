@@ -4,6 +4,8 @@ import json
 import fnmatch
 import re
 
+from operator import itemgetter
+
 import parse
 
 
@@ -27,13 +29,21 @@ def type_value(s):
     return s
 
 
+def _get_sorted_items(dataset):
+    items = []
+    for identifier in dataset.identifiers:
+        props = dataset.item_properties(identifier)
+        i = (props["relpath"], identifier)
+        items.append(i)
+    return sorted(items)
+
+
 def bool_overlay_from_glob_rule(name, dataset, glob_rule):
     """Return bool TransformOverlays instance from glob rule."""
     overlays = TransformOverlays()
     overlays.overlay_names.append(name)
-    for identifier in sorted(dataset.identifiers):
-        props = dataset.item_properties(identifier)
-        relpath = props["relpath"]
+
+    for relpath, identifier in _get_sorted_items(dataset):
         value = fnmatch.fnmatch(relpath, glob_rule)
 
         overlays.identifiers.append(identifier)
@@ -65,9 +75,7 @@ def pair_overlay_from_suffix(name, dataset, suffix):
         lookup[p1] = p2
         lookup[p2] = p1
 
-    for identifier in sorted(dataset.identifiers):
-        props = dataset.item_properties(identifier)
-        relpath = props["relpath"]
+    for relpath, identifier in _get_sorted_items(dataset):
         value = None
         if relpath.endswith(suffix):
             value = lookup[identifier]
@@ -80,15 +88,14 @@ def pair_overlay_from_suffix(name, dataset, suffix):
 
 
 def value_overlays_from_parsing(dataset, parse_rule):
-    """Return bool TransformOverlays instance from glob rule."""
+    """Return value TransformOverlays instance from parse rule."""
     overlays = TransformOverlays()
     parsed = []
-    identifiers = sorted(dataset.identifiers)
+
+    items = _get_sorted_items(dataset)
 
     # Parse metadata from relpaths that match the glob rule.
-    for identifier in identifiers:
-        props = dataset.item_properties(identifier)
-        relpath = props["relpath"]
+    for relpath, identifier in items:
         parsed.append(parse.parse(parse_rule, relpath))
 
     # Determine the overlay names.
@@ -100,9 +107,7 @@ def value_overlays_from_parsing(dataset, parse_rule):
 
     # Populate the TransformOverlays instance with data.
     overlays.overlay_names = sorted(overlay_names)
-    for identifier, p in zip(identifiers, parsed):
-        props = dataset.item_properties(identifier)
-        relpath = props["relpath"]
+    for (relpath, identifier), p in zip(items, parsed):
 
         overlays.identifiers.append(identifier)
         overlays.relpaths.append(relpath)
@@ -218,13 +223,22 @@ class TransformOverlays(object):
         header.append("relpaths")
         csv_lines.append(",".join(header))
 
+        content = []
         for i in range(len(self.identifiers)):
-            row = []
-            row.append(str(self.identifiers[i]))
+            data = {}
+            data["identifier"] = str(self.identifiers[i])
+            data["relpath"] = self.relpaths[i]
             for name in self.overlay_names:
                 value = str(self.overlays[name][i])
-                row.append(value)
-            row.append(str(self.relpaths[i]))
+                data[name] = value
+            content.append(data)
+
+        for c in sorted(content, key=itemgetter("relpath")):
+            row = []
+            row.append(c["identifier"])
+            for name in self.overlay_names:
+                row.append(c[name])
+            row.append(c["relpath"])
             csv_lines.append(",".join(row))
 
         return "\n".join(csv_lines)

@@ -69,9 +69,9 @@ def test_OverlayTransformet_dataset(tmp_dataset_fixture):  # NOQA
     expected = """identifiers,line,read,relpaths
 0109d5c3918c504f12a6270574ddd99aa7907b44,None,None,md5.txt
 1f32389b2f38edb965fc856a1bd2d1a08040407a,mut,1,mut/read_1.fq.gz
-2d7cfe62dc3d14f7a9407ba334189b68922f0457,wt,2,wt/read_2.fq.gz
 eba3ee4e2f41b172d3a84f425664df4f21a60710,mut,2,mut/read_2.fq.gz
-f7b8e915f8af6ea3873104c42efd1770f8eb51db,wt,1,wt/read_1.fq.gz"""  # NOQA
+f7b8e915f8af6ea3873104c42efd1770f8eb51db,wt,1,wt/read_1.fq.gz
+2d7cfe62dc3d14f7a9407ba334189b68922f0457,wt,2,wt/read_2.fq.gz"""  # NOQA
 
     assert expected == overlays.to_csv()
 
@@ -82,4 +82,5 @@ f7b8e915f8af6ea3873104c42efd1770f8eb51db,wt,1,wt/read_1.fq.gz"""  # NOQA
     assert expected_names == set(tmp_dataset_fixture.list_overlay_names())
 
     overlays_from_dataset = TransformOverlays.from_dataset(tmp_dataset_fixture)
+
     assert expected == overlays_from_dataset.to_csv()

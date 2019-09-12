@@ -14,6 +14,9 @@ Added
 Changed
 ^^^^^^^
 
+- Changed ordering of lines in overlay CSV template from being sorted by the
+  identifier to being ordered by the relpath
+
 
 Deprecated
 ^^^^^^^^^^
@@ -25,6 +28,7 @@ Removed
 
 Fixed
 ^^^^^
+
 
 
 Security
