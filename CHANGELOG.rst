@@ -14,9 +14,6 @@ Added
 Changed
 ^^^^^^^
 
-- Changed ordering of lines in overlay CSV template from being sorted by the
-  identifier to being ordered by the relpath
-
 
 Deprecated
 ^^^^^^^^^^
@@ -33,6 +30,16 @@ Fixed
 
 Security
 ^^^^^^^^
+
+
+[0.3.0] - 2019-09-12
+--------------------
+
+Changed
+^^^^^^^
+
+- Changed ordering of lines in overlay CSV template from being sorted by the
+  identifier to being ordered by the relpath
 
 
 [0.2.0] - 2019-09-06
