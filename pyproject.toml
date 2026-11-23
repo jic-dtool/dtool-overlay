@@ -17,7 +17,7 @@ dependencies = [
     "dtoolcore",
     "parse",
     "click",
-    "dtool-cli",
+    "dtool-cli>=0.7.2",
 ]
 
 [project.urls]
