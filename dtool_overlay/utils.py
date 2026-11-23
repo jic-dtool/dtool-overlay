@@ -123,7 +123,7 @@ def value_overlays_from_parsing(dataset, parse_rule):
     return overlays
 
 
-class TransformOverlays(object):
+class TransformOverlays:
     """Convert overlays between csv, dict and dataset representations."""
 
     def __init__(self):
