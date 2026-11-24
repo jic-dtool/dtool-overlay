@@ -5,6 +5,10 @@ dtool CLI commands for working with per item metadata
    :target: http://badge.fury.io/py/dtool-overlay
    :alt: PyPi package
 
+.. image:: https://github.com/jic-dtool/dtool-overlay/actions/workflows/test.yml/badge.svg?branch=main
+   :target: https://github.com/jic-dtool/dtool-overlay/actions/workflows/test.yml
+   :alt: Tests
+
 .. image:: https://codecov.io/github/jic-dtool/dtool-overlay/coverage.svg?branch=main
    :target: https://codecov.io/github/jic-dtool/dtool-overlay?branch=main
    :alt: Code Coverage

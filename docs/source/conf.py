@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 #
 # This file is execfile()d with the current directory set to its
 # containing dir.
@@ -45,17 +44,17 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = u"dtool-overlay"
-copyright = u"2019, Tjelvar Olsson"
-author = u"Tjelvar Olsson"
-repo_name = u"dtool-overlay"
+project = "dtool-overlay"
+copyright = "2019, Tjelvar Olsson"
+author = "Tjelvar Olsson"
+repo_name = "dtool-overlay"
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
 # built documents.
 #
 # The short X.Y version.
-version = u"0.3.1"
+version = "0.3.1"
 # The full version, including alpha/beta/rc tags.
 release = version
 
@@ -139,7 +138,7 @@ latex_elements = {
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
     (master_doc, '{}.tex'.format(repo_name),
-     u'{} Documentation'.format(repo_name),
+     '{} Documentation'.format(repo_name),
      author, 'manual'),
 ]
 
@@ -149,7 +148,7 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    (master_doc, repo_name, u'{} Documentation'.format(repo_name),
+    (master_doc, repo_name, '{} Documentation'.format(repo_name),
      [author], 1)
 ]
 
@@ -160,7 +159,7 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-    (master_doc, repo_name, u'{} Documentation'.format(repo_name),
-     author, repo_name, u'dtool CLI utilities for working with per item metadata',
+    (master_doc, repo_name, '{} Documentation'.format(repo_name),
+     author, repo_name, 'dtool CLI utilities for working with per item metadata',
      'Miscellaneous'),
 ]
