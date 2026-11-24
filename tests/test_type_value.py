@@ -7,6 +7,7 @@ def test_type_value():
     assert type_value("True") is True
     assert type_value("False") is False
     assert type_value("") is None
+    assert type_value("None") is None
     assert type_value("4") == 4
     assert type(type_value("4")) is int
     assert type_value("4.") == 4.
