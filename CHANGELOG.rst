@@ -26,6 +26,11 @@ Removed
 Fixed
 ^^^^^
 
+- Overlay values that are missing in a CSV template (written as ``None``,
+  e.g. by ``dtool overlays template parse`` for items that do not match the
+  rule) are stored as null by ``dtool overlays write``, not as the string
+  ``"None"``
+
 
 Security
 ^^^^^^^^

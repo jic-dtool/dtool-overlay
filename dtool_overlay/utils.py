@@ -15,7 +15,8 @@ EXCLUDED_NAMES = ("identifiers", "relpaths")
 def type_value(s):
     if s in ["True", "False"]:
         return s == "True"
-    if s == "":
+    # CSV templates write missing values as str(None), i.e. "None".
+    if s in ("", "None"):
         return None
 
     # Int
